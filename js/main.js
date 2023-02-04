@@ -19,7 +19,6 @@ Vue.component('left-list', {
         return {
             taskTitle: null,
             task: [],
-
         }
 
     },
@@ -39,14 +38,21 @@ Vue.component('left-list', {
         },
         checkbox(id){
             this.note_data.tasks[id].completed = !this.note_data.tasks[id].completed;
+            for (let el of this.note_data.tasks) {
+                if (el.completed) {
+                    this.note_data.counter++;
+                    console.log(this.note_data.counter);
+                }
+            }
+
             localStorage.todo = JSON.stringify(this.notes);
+            this.note_data.counter = 0;
         }
 
     },
-    computed: {},
     template: `
-    <div class="center-list">
-        <div class="column column2" >
+    <div class="left-list">
+        <div class="column column1" >
             <div class="create_task">
                 <h3 class="title_block">{{note_data.noteTitle}}</h3>
                 <button @click="delNote()">X</button>
@@ -112,7 +118,10 @@ let app = new Vue({
     data: {
         notes: [],
         noteTitle: null,
-        todos: []
+        todos: [],
+    },
+    computed: {
+
     },
     mounted() {
         if (localStorage.todo) {
@@ -131,6 +140,7 @@ let app = new Vue({
                 this.notes.push({
                     noteTitle: this.noteTitle,
                     tasks: [],
+                    counter: 0
                 });
                 this.noteTitle = null;
                 localStorage.todo = JSON.stringify(this.notes);

@@ -22,11 +22,17 @@
     </div>
     <br>
 
-<!--    <div class="container">-->
+    <div class="container">
+    <div class="column column1" >
         <left-list @del_note="deleteNote(index)" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></left-list>
-<!--        <center-list></center-list>-->
-<!--        <right-list></right-list>-->
-<!--    </div>-->
+    </div>
+    <div class="column column2">
+        <center-list></center-list>
+    </div>
+    <div class="column column3">
+        <right-list></right-list>
+    </div>
+    </div>
 </div>
 </body>
 </html>
