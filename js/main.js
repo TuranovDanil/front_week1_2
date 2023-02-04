@@ -19,14 +19,14 @@ Vue.component('left-list', {
         return {
             taskTitle: null,
             task: [],
-            completed: false
+
         }
 
     },
     methods: {
-        deleteNote(){
-            this.$emit('delete-note')
-        },
+        // deleteNote(){
+        //     this.$emit('delete-note')
+        // },
         addTask() {
             if (this.taskTitle){
                 this.note_data.tasks.push({
@@ -46,7 +46,7 @@ Vue.component('left-list', {
     computed: {},
     template: `
     <div class="center-list">
-        <div class="column column2">
+        <div class="column column2" >
             <div class="create_task">
                 <h3 class="title_block">{{note_data.noteTitle}}</h3>
                 <button @click="noteDelete()">X</button>
@@ -61,9 +61,9 @@ Vue.component('left-list', {
                 </div>
                 <div class="add_task">
                     <div class="add_task_input">
-                        <input type="text" @keyup.enter="addTask()" v-model="note_data.tasks.taskTitle" placeholder="Задача">
+                        <input type="text" @keyup.enter="addTask" v-model="taskTitle" placeholder="Задача">
                     </div>
-                    <button @click="addTask()">Добавить</button>
+                    <button @click="addTask">Добавить</button>
                 </div>
             </div>
         </div>
@@ -136,9 +136,9 @@ let app = new Vue({
                 localStorage.todo = JSON.stringify(this.notes);
             }
         },
-        deleteNote(id){
-            app.notes.slice(id, 1);
-            localStorage.todo = JSON.stringify(this.notes);
-        }
+        // deleteNote(id){
+        //     app.notes.slice(id, 1);
+        //     localStorage.todo = JSON.stringify(this.notes);
+        // }
     },
 })
