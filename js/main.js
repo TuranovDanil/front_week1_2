@@ -38,15 +38,15 @@ Vue.component('left-list', {
         },
         checkbox(id){
             this.note_data.tasks[id].completed = !this.note_data.tasks[id].completed;
+            let counter = 0;
             for (let el of this.note_data.tasks) {
                 if (el.completed) {
-                    this.note_data.counter++;
+                    counter++;
                     console.log(this.note_data.counter);
                 }
             }
-
+            this.note_data.completedNum = counter;
             localStorage.todo = JSON.stringify(this.notes);
-            this.note_data.counter = 0;
         }
 
     },
@@ -140,7 +140,7 @@ let app = new Vue({
                 this.notes.push({
                     noteTitle: this.noteTitle,
                     tasks: [],
-                    counter: 0
+                    completedNum: 0
                 });
                 this.noteTitle = null;
                 localStorage.todo = JSON.stringify(this.notes);
