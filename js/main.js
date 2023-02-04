@@ -24,9 +24,9 @@ Vue.component('left-list', {
 
     },
     methods: {
-        // deleteNote(){
-        //     this.$emit('delete-note')
-        // },
+        delNote(){
+            this.$emit('del_note')
+        },
         addTask() {
             if (this.taskTitle){
                 this.note_data.tasks.push({
@@ -49,7 +49,7 @@ Vue.component('left-list', {
         <div class="column column2" >
             <div class="create_task">
                 <h3 class="title_block">{{note_data.noteTitle}}</h3>
-                <button @click="noteDelete()">X</button>
+                <button @click="delNote()">X</button>
             </div>
             <div class="task">
                 <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
@@ -136,9 +136,9 @@ let app = new Vue({
                 localStorage.todo = JSON.stringify(this.notes);
             }
         },
-        // deleteNote(id){
-        //     app.notes.slice(id, 1);
-        //     localStorage.todo = JSON.stringify(this.notes);
-        // }
+        deleteNote(id){
+            this.notes.splice(id, 1);
+            localStorage.todo = JSON.stringify(this.notes);
+        }
     },
 })

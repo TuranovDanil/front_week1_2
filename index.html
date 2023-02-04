@@ -23,7 +23,7 @@
     <br>
 
 <!--    <div class="container">-->
-        <left-list :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></left-list>
+        <left-list @del_note="deleteNote(index)" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></left-list>
 <!--        <center-list></center-list>-->
 <!--        <right-list></right-list>-->
 <!--    </div>-->
