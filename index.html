@@ -12,14 +12,21 @@
 </head>
 <body>
 <div id="app">
-    <div id="added">
+    <div id="created">
         <h1>Заметки</h1>
+        <div>
+            <input @keyup.enter="createNote" v-model="noteTitle" placeholder="заметка">
+            <button @click="createNote">Добавить</button>
+        </div>
+
     </div>
     <br>
 
-    <container>
-
-    </container>
+<!--    <div class="container">-->
+        <left-list  :notes="notes" :note_data="note" v-for="(note, index) in notes" :key="index"></left-list>
+<!--        <center-list></center-list>-->
+<!--        <right-list></right-list>-->
+<!--    </div>-->
 </div>
 </body>
 </html>
