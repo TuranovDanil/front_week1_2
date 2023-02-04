@@ -27,7 +27,7 @@
         <left-list @del_note="deleteNote(index)" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></left-list>
     </div>
     <div class="column column2">
-        <center-list></center-list>
+        <center-list @del_note="deleteNote(index)" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></center-list>
     </div>
     <div class="column column3">
         <right-list></right-list>
