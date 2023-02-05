@@ -26,6 +26,9 @@ Vue.component('list', {
         delNote() {
             this.$emit('del_note')
         },
+        column1Move(){
+            this.$emit('column1_move')
+        },
         addTask() {
             if (this.taskTitle) {
                 this.note_data.tasks.push({
@@ -33,7 +36,8 @@ Vue.component('list', {
                     completed: false,
                 });
                 this.taskTitle = null;
-                localStorage.todo = JSON.stringify(this.notes)
+                localStorage.todo = JSON.stringify(this.notes);
+                this.column1Move();
             }
         },
         checkbox(id) {
@@ -191,8 +195,10 @@ let app = new Vue({
     el: '#app',
     data: {
         notes: [],
+        notes2: [],
         noteTitle: null,
         todos: [],
+        column1: 0
     },
     computed: {},
     mounted() {
@@ -213,7 +219,6 @@ let app = new Vue({
                     noteTitle: this.noteTitle,
                     tasks: [],
                     completedNum: 0,
-                    notCompletedNum: 0
                 });
                 this.noteTitle = null;
                 localStorage.todo = JSON.stringify(this.notes);
@@ -223,5 +228,14 @@ let app = new Vue({
             this.notes.splice(id, 1);
             localStorage.todo = JSON.stringify(this.notes);
         },
+        moveColumn1(){
+            // let counter = 0;
+            for (let i = 0; i < this.notes.length; i++){
+                if(this.notes[i].completedNum > 50){
+                    this.notes2.push(this.notes[i])
+                }
+
+            }
+        }
     },
 })
