@@ -44,6 +44,13 @@ h1, h2{
 li{
     list-style: none;
 }
+
 .none{
     display: none;
 }
+
+.disabled{
+    color: red;
+    pointer-events: none;
+}
+

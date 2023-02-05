@@ -15,26 +15,30 @@
     <div id="created">
         <h1>Заметки</h1>
         <div>
-            <input @keyup.enter="createNote" v-model="noteTitle" placeholder="заметка">
-            <button @click="createNote">Добавить</button>
+            <input @keyup.enter="createNote" v-model="noteTitle" :disabled="notes2.length===5" placeholder="заметка">
+            <button @click="createNote" :class="{disabled: notes2.length===5}">Добавить</button>
         </div>
 
     </div>
     <br>
 
     <div class="container">
-    <div class="column column1" >
-        <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index" ></list>
-<!--        v-if="note_data.completedNum <= 50"-->
-    </div>
-    <div class="column column2">
-        <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)" @column2_move_left="moveColumn2Left(index)" :notes="notes2" :note_data="note_data" v-for="(note_data, index) in notes2" :key="index" ></list>
-<!--        v-if="note_data.completedNum > 50 && note_data.completedNum !== 100"-->
-    </div>
-    <div class="column column3">
-        <list @del_note="deleteNote3(index)" :notes="notes3" :note_data="note_data" v-for="(note_data, index) in notes3" :key="index" ></list>
-<!--        v-if="note_data.completedNum === 100"-->
-    </div>
+        <div class="column column1" :class="{disabled: notes2.length===5}">
+            <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="notes"
+                  :note_data="note_data" v-for="(note_data, index) in notes" :key="index"></list>
+            <!--        v-if="note_data.completedNum <= 50"-->
+        </div>
+        <div class="column column2">
+            <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)"
+                  @column2_move_left="moveColumn2Left(index)" :notes="notes2" :note_data="note_data"
+                  v-for="(note_data, index) in notes2" :key="index"></list>
+            <!--        v-if="note_data.completedNum > 50 && note_data.completedNum !== 100"-->
+        </div>
+        <div class="column column3">
+            <list @del_note="deleteNote3(index)" :notes="notes3" :note_data="note_data"
+                  v-for="(note_data, index) in notes3" :key="index"></list>
+            <!--        v-if="note_data.completedNum === 100"-->
+        </div>
     </div>
 </div>
 </body>
