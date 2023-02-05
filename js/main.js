@@ -91,7 +91,7 @@ Vue.component('list', {
                         <p>{{note_data.date}}</p>
                     </div>
                 </div>
-                <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
+                <div class="add_task" :class="{none: note_data.tasks.length >= 5 || note_data.completedNum === 100}">                  
                     <div class="add_task_input">
                         <input required type="text" @keyup.enter="addTask(),column2MoveLeft()" v-model="taskTitle" placeholder="Задача">
                     </div>
