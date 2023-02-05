@@ -152,6 +152,9 @@ let app = new Vue({
                     time: null
                 });
                 this.noteTitle = null;
+                this.taskTitle1 = null;
+                this.taskTitle2 = null;
+                this.taskTitle3 = null
                 localStorage.todo = JSON.stringify(this.notes);
 
             }
