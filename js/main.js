@@ -55,6 +55,9 @@ Vue.component('list', {
                     counterNotCompleted++;
                 }
             }
+            // if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
+            // else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
+            // else localStorage.todo2 = JSON.stringify(this.notes);
             this.note_data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
             this.column1Move();
             this.column2Move();
@@ -262,7 +265,12 @@ let app = new Vue({
                     this.notes3.push(this.notes2[i])
                     this.notes2.splice(this.notes2[i], 1)
                 }
+                else if(this.notes2[i].completedNum <= 50){
+                    this.notes.push(this.notes2[i])
+                    this.notes2.splice(this.notes2[i], 1)
+                }
             }
+            localStorage.todo = JSON.stringify(this.notes);
             localStorage.todo2 = JSON.stringify(this.notes2);
             localStorage.todo3 = JSON.stringify(this.notes3);
         },
