@@ -59,6 +59,7 @@ h1, h2{
     border: 1px solid green;
     border-radius: 20px;
     padding: 3px;
+    min-width: 100px;
 }
 
 .title_task{
