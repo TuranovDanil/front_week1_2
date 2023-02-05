@@ -39,7 +39,9 @@ Vue.component('list', {
                     completed: false,
                 });
                 this.taskTitle = null;
-                localStorage.todo = JSON.stringify(this.notes);
+                if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
+                else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
+                else localStorage.todo2 = JSON.stringify(this.notes);
             }
         },
         checkbox(id) {
@@ -56,7 +58,10 @@ Vue.component('list', {
             this.note_data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
             this.column1Move();
             this.column2Move();
-            localStorage.todo = JSON.stringify(this.notes);
+            if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
+            else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
+            else localStorage.todo2 = JSON.stringify(this.notes);
+
         }
 
     },
@@ -208,7 +213,12 @@ let app = new Vue({
     mounted() {
         if (localStorage.todo) {
             this.notes = JSON.parse(localStorage.todo);
-
+        }
+        if (localStorage.todo2) {
+            this.notes2 = JSON.parse(localStorage.todo2);
+        }
+        if (localStorage.todo3) {
+            this.notes3 = JSON.parse(localStorage.todo3);
         }
     },
     methods: {
@@ -240,10 +250,10 @@ let app = new Vue({
                 if(this.notes[i].completedNum > 50){
                     this.notes2.push(this.notes[i])
                     this.notes.splice(this.notes[i], 1)
-                    console.log(123)
                 }
             }
             localStorage.todo = JSON.stringify(this.notes);
+            localStorage.todo2 = JSON.stringify(this.notes2);
 
         },
         moveColumn2(){
@@ -253,6 +263,8 @@ let app = new Vue({
                     this.notes2.splice(this.notes2[i], 1)
                 }
             }
+            localStorage.todo2 = JSON.stringify(this.notes2);
+            localStorage.todo3 = JSON.stringify(this.notes3);
         },
     },
 })
