@@ -215,8 +215,8 @@ let app = new Vue({
         addInTodos() {
             this.todos.push({
                 notes: this.notes,
-                // notes2: this.notes2,
-                // notes3: this.notes3
+                notes2: this.notes2,
+                notes3: this.notes3
             })
 
         },
@@ -250,6 +250,7 @@ let app = new Vue({
             for (let i = 0; i < this.notes2.length; i++){
                 if(this.notes2[i].completedNum === 100){
                     this.notes3.push(this.notes2[i])
+                    this.notes2.splice(this.notes2[i], 1)
                 }
             }
         },
