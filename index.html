@@ -28,11 +28,11 @@
 <!--        v-if="note_data.completedNum <= 50"-->
     </div>
     <div class="column column2">
-        <list @del_note="deleteNote(index)" @column2_move="moveColumn2" :notes2="notes2" :note_data="note_data" v-for="(note_data, index) in notes2" :key="index" ></list>
+        <list @del_note="deleteNote(index)" @column2_move="moveColumn2" :notes="notes2" :note_data="note_data" v-for="(note_data, index) in notes2" :key="index" ></list>
 <!--        v-if="note_data.completedNum > 50 && note_data.completedNum !== 100"-->
     </div>
     <div class="column column3">
-        <list @del_note="deleteNote(index)" :notes3="notes3" :note_data="note_data" v-for="(note_data, index) in notes3" :key="index" ></list>
+        <list @del_note="deleteNote(index)" :notes="notes3" :note_data="note_data" v-for="(note_data, index) in notes3" :key="index" ></list>
 <!--        v-if="note_data.completedNum === 100"-->
     </div>
     </div>

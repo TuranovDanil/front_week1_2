@@ -75,7 +75,7 @@ Vue.component('list', {
                 <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
                     <div class="set_task">
                         <p class="title_task">{{element.taskTitle}}</p>
-                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
+                        <input @click="checkbox(elementId),column1Move(),column2Move()"  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
                     </div>
                 </div>
                 <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
@@ -212,13 +212,13 @@ let app = new Vue({
     computed: {},
     mounted() {
         if (localStorage.todo) {
-            this.notes = JSON.parse(localStorage.todo);
+            this.notes = JSON.parse(localStorage.todo)
         }
         if (localStorage.todo2) {
-            this.notes2 = JSON.parse(localStorage.todo2);
+            this.notes2 = JSON.parse(localStorage.todo2)
         }
         if (localStorage.todo3) {
-            this.notes3 = JSON.parse(localStorage.todo3);
+            this.notes3 = JSON.parse(localStorage.todo3)
         }
     },
     methods: {
