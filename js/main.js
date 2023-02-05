@@ -39,13 +39,21 @@ Vue.component('list', {
                     completed: false,
                 });
                 this.taskTitle = null;
-                if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
-                else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
-                else localStorage.todo2 = JSON.stringify(this.notes);
+                this.save();
+                this.updateCompletedNum();
+                this.column1Move();
+                this.column2Move();
+                // this.save();
             }
         },
-        checkbox(id) {
+        checkbox(id = this.note_data.tasks.length) {
             this.note_data.tasks[id].completed = !this.note_data.tasks[id].completed;
+            this.updateCompletedNum();
+            this.column1Move();
+            this.column2Move();
+            this.save();
+        },
+        updateCompletedNum(){
             let counterCompleted = 0;
             let counterNotCompleted = 0;
             for (let el of this.note_data.tasks) {
@@ -55,16 +63,13 @@ Vue.component('list', {
                     counterNotCompleted++;
                 }
             }
-            // if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
-            // else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
-            // else localStorage.todo2 = JSON.stringify(this.notes);
             this.note_data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
-            this.column1Move();
-            this.column2Move();
+
+        },
+        save(){
             if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
             else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
             else localStorage.todo2 = JSON.stringify(this.notes);
-
         }
 
     },
@@ -246,7 +251,11 @@ let app = new Vue({
         },
         deleteNote(id) {
             this.notes.splice(id, 1);
+            this.notes2.splice(id, 1);
+            this.notes3.splice(id, 1);
             localStorage.todo = JSON.stringify(this.notes);
+            localStorage.todo2 = JSON.stringify(this.notes2);
+            localStorage.todo3 = JSON.stringify(this.notes3);
         },
         moveColumn1(){
             for (let i = 0; i < this.notes.length; i++){
