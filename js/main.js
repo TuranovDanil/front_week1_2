@@ -81,9 +81,12 @@ Vue.component('list', {
                 <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
                     <div class="set_task">
                         <p class="title_task">{{element.taskTitle}}</p>
-                        <input @click="checkbox(elementId),column1Move(),column2Move(),column2MoveLeft()" type="checkbox" 
-                               v-model="element.completed" :class="{none: note_data.completedNum === 100, disabled: note_data.completedNum > 50 && element.completed}" >
+                        <input @click="checkbox(elementId),column1Move(),column2Move(),column2MoveLeft()" 
+                               type="checkbox" 
+                               v-model="element.completed" 
+                               :class="{none: note_data.completedNum === 100, disabled: note_data.completedNum > 50 && element.completed}" >
                     </div>
+                    <div class="date" v-if="note_data.date"><p>{{note_data.date}}</p></div>
                 </div>
                 <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
                     <div class="add_task_input">
@@ -125,10 +128,11 @@ let app = new Vue({
                     noteTitle: this.noteTitle,
                     tasks: [],
                     completedNum: 0,
+                    date: null
                 });
                 this.noteTitle = null;
                 localStorage.todo = JSON.stringify(this.notes);
-                console.log(this.notes.length)
+
             }
         },
         deleteNote1(id) {
@@ -154,14 +158,12 @@ let app = new Vue({
         },
         moveColumn2(id) {
             if (this.notes2[id].completedNum === 100) {
+                let Data = new Date()
+                this.notes2[id].date = Data.getDate() + ':' + Data.getMonth() + ':' + Data.getFullYear();
                 this.notes3.push(this.notes2[id])
+
                 this.notes2.splice(id, 1)
             }
-            // else if (this.notes2[id].completedNum <= 50) {
-            //     this.notes.unshift(this.notes2[id])
-            //     this.notes2.splice(this.notes2[id], 1)
-            // }
-            // localStorage.todo = JSON.stringify(this.notes);
             localStorage.todo2 = JSON.stringify(this.notes2);
             localStorage.todo3 = JSON.stringify(this.notes3);
         },
