@@ -26,11 +26,14 @@ Vue.component('list', {
         delNote() {
             this.$emit('del_note')
         },
-        column1Move(){
+        column1Move() {
             this.$emit('column1_move')
         },
-        column2Move(){
+        column2Move() {
             this.$emit('column2_move')
+        },
+        column2MoveLeft() {
+            this.$emit('column2_move_left')
         },
         addTask() {
             if (this.taskTitle) {
@@ -41,19 +44,20 @@ Vue.component('list', {
                 this.taskTitle = null;
                 this.save();
                 this.updateCompletedNum();
-                this.column1Move();
-                this.column2Move();
+                // this.column1Move();
+                // this.column2Move();
                 // this.save();
             }
         },
-        checkbox(id = this.note_data.tasks.length) {
+        checkbox(id) {
             this.note_data.tasks[id].completed = !this.note_data.tasks[id].completed;
             this.updateCompletedNum();
             this.column1Move();
             this.column2Move();
+            this.column2MoveLeft()
             this.save();
         },
-        updateCompletedNum(){
+        updateCompletedNum() {
             let counterCompleted = 0;
             let counterNotCompleted = 0;
             for (let el of this.note_data.tasks) {
@@ -66,9 +70,9 @@ Vue.component('list', {
             this.note_data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
 
         },
-        save(){
-            if(this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
-            else if(this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
+        save() {
+            if (this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
+            else if (this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
             else localStorage.todo2 = JSON.stringify(this.notes);
         }
 
@@ -83,7 +87,7 @@ Vue.component('list', {
                 <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
                     <div class="set_task">
                         <p class="title_task">{{element.taskTitle}}</p>
-                        <input @click="checkbox(elementId),column1Move(),column2Move()"  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
+                        <input @click="checkbox(elementId),column1Move(),column2Move(),column2MoveLeft()"  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
                     </div>
                 </div>
                 <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
@@ -215,7 +219,6 @@ let app = new Vue({
         notes2: [],
         notes3: [],
         noteTitle: null,
-        todos: [],
     },
     computed: {},
     mounted() {
@@ -230,14 +233,6 @@ let app = new Vue({
         }
     },
     methods: {
-        addInTodos() {
-            this.todos.push({
-                notes: this.notes,
-                notes2: this.notes2,
-                notes3: this.notes3
-            })
-
-        },
         createNote() {
             if (this.noteTitle) {
                 this.notes.push({
@@ -249,39 +244,47 @@ let app = new Vue({
                 localStorage.todo = JSON.stringify(this.notes);
             }
         },
-        deleteNote(id) {
+        deleteNote1(id) {
             this.notes.splice(id, 1);
-            this.notes2.splice(id, 1);
-            this.notes3.splice(id, 1);
             localStorage.todo = JSON.stringify(this.notes);
-            localStorage.todo2 = JSON.stringify(this.notes2);
-            localStorage.todo3 = JSON.stringify(this.notes3);
         },
-        moveColumn1(){
-            for (let i = 0; i < this.notes.length; i++){
-                if(this.notes[i].completedNum > 50){
-                    this.notes2.push(this.notes[i])
-                    this.notes.splice(this.notes[i], 1)
-                }
-            }
-            localStorage.todo = JSON.stringify(this.notes);
-            localStorage.todo2 = JSON.stringify(this.notes2);
+        deleteNote2(id) {
 
+            this.notes2.splice(id, 1);
+            localStorage.todo2 = JSON.stringify(this.notes2);
         },
-        moveColumn2(){
-            for (let i = 0; i < this.notes2.length; i++){
-                if(this.notes2[i].completedNum === 100){
-                    this.notes3.push(this.notes2[i])
-                    this.notes2.splice(this.notes2[i], 1)
-                }
-                else if(this.notes2[i].completedNum <= 50){
-                    this.notes.push(this.notes2[i])
-                    this.notes2.splice(this.notes2[i], 1)
-                }
+        deleteNote3(id) {
+            this.notes3.splice(id, 1);
+            localStorage.todo3 = JSON.stringify(this.notes3);
+        },
+        moveColumn1(id) {
+            if (this.notes[id].completedNum > 50) {
+                this.notes2.push(this.notes[id])
+                this.notes.splice(id, 1)
             }
             localStorage.todo = JSON.stringify(this.notes);
             localStorage.todo2 = JSON.stringify(this.notes2);
+        },
+        moveColumn2(id) {
+            if (this.notes2[id].completedNum === 100) {
+                this.notes3.push(this.notes2[id])
+                this.notes2.splice(id, 1)
+            }
+            // else if (this.notes2[id].completedNum <= 50) {
+            //     this.notes.unshift(this.notes2[id])
+            //     this.notes2.splice(this.notes2[id], 1)
+            // }
+            // localStorage.todo = JSON.stringify(this.notes);
+            localStorage.todo2 = JSON.stringify(this.notes2);
             localStorage.todo3 = JSON.stringify(this.notes3);
+        },
+        moveColumn2Left(id) {
+            if (this.notes2[id].completedNum <= 50) {
+                this.notes.unshift(this.notes2[id])
+                this.notes2.splice(id, 1)
+            }
+            localStorage.todo = JSON.stringify(this.notes);
+            localStorage.todo2 = JSON.stringify(this.notes2);
         },
     },
 })
