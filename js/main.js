@@ -42,19 +42,13 @@ Vue.component('list', {
                     completed: false,
                 });
                 this.taskTitle = null;
-                this.save();
                 this.updateCompletedNum();
-                // this.column1Move();
-                // this.column2Move();
-                // this.save();
+                this.save();
             }
         },
         checkbox(id) {
             this.note_data.tasks[id].completed = !this.note_data.tasks[id].completed;
             this.updateCompletedNum();
-            this.column1Move();
-            this.column2Move();
-            this.column2MoveLeft()
             this.save();
         },
         updateCompletedNum() {
@@ -92,9 +86,9 @@ Vue.component('list', {
                 </div>
                 <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
                     <div class="add_task_input">
-                        <input required type="text" @keyup.enter="addTask" v-model="taskTitle" placeholder="Задача">
+                        <input required type="text" @keyup.enter="addTask(),column2MoveLeft()" v-model="taskTitle" placeholder="Задача">
                     </div>
-                    <button @click="addTask">Добавить</button>
+                    <button @click="addTask(),column2MoveLeft()">Добавить</button>
             </div>
         </div>
     </div>
