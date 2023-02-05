@@ -73,14 +73,14 @@ Vue.component('list', {
     },
     template: `
     <div class="list" >
-            <div class="create_task">
-                <h3 class="title_block">{{note_data.noteTitle}}</h3>
+            <div class="note_title_block">
+                <h2 class="note_title">{{note_data.noteTitle}}</h2>
                 <button @click="delNote()">X</button>
             </div>
-            <div class="task">
-                <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
+            <div class="tasks">
+                <div v-for="(element, elementId) in note_data.tasks" :key="elementId" class="task">
                     <div class="set_task">
-                        <p class="title_task">{{element.taskTitle}}</p>
+                        <h3 class="title_task">{{element.taskTitle}}</h3>
                         <input @click="checkbox(elementId),column1Move(),column2Move(),column2MoveLeft()" 
                                type="checkbox" 
                                v-model="element.completed" 
