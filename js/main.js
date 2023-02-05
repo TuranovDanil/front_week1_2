@@ -111,6 +111,10 @@ let app = new Vue({
         notes2: [],
         notes3: [],
         noteTitle: null,
+        taskTitle1: null,
+        taskTitle2: null,
+        taskTitle3: null,
+        completed: false,
     },
     computed: {},
     mounted() {
@@ -126,10 +130,23 @@ let app = new Vue({
     },
     methods: {
         createNote() {
-            if (this.noteTitle && this.notes.length < 3) {
+            if (this.noteTitle && this.notes.length < 3 && this.taskTitle1 && this.taskTitle2 && this.taskTitle3) {
                 this.notes.push({
                     noteTitle: this.noteTitle,
-                    tasks: [],
+                    tasks: [
+                        {
+                            taskTitle: this.taskTitle1,
+                            completed: this.completed
+                        },
+                        {
+                            taskTitle: this.taskTitle2,
+                            completed: this.completed
+                        },
+                        {
+                            taskTitle: this.taskTitle3,
+                            completed: this.completed
+                        }
+                    ],
                     completedNum: 0,
                     date: null,
                     time: null

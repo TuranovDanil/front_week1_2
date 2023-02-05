@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -14,10 +14,13 @@
 <div id="app">
     <div id="created">
         <h1>Заметки</h1>
-        <div>
-            <input @keyup.enter="createNote" v-model="noteTitle" :disabled="notes2.length===5" placeholder="заметка">
-            <button @click="createNote" :class="{disabled: notes2.length===5}">Добавить</button>
-        </div>
+        <form @submit.prevent="createNote">
+            <input v-model="noteTitle" :disabled="notes2.length===5" placeholder="заметка">
+            <input v-model="taskTitle1" :disabled="notes2.length===5" placeholder="задача1">
+            <input v-model="taskTitle2" :disabled="notes2.length===5" placeholder="задача2">
+            <input v-model="taskTitle3" :disabled="notes2.length===5" placeholder="задача3">
+            <input type="submit" value="Добавить" :class="{disabled: notes2.length===5}">
+        </form>
 
     </div>
     <br>
