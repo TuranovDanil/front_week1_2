@@ -15,31 +15,34 @@
     <div id="created">
         <h1>Заметки</h1>
         <form @submit.prevent="createNote">
-            <input v-model="noteTitle" :disabled="notes2.length===5" placeholder="заметка">
-            <input v-model="taskTitle1" :disabled="notes2.length===5" placeholder="задача1">
-            <input v-model="taskTitle2" :disabled="notes2.length===5" placeholder="задача2">
-            <input v-model="taskTitle3" :disabled="notes2.length===5" placeholder="задача3">
-            <input type="submit" value="Добавить" :class="{disabled: notes2.length===5}">
+            <input v-model="noteTitle" :disabled="column1.notes.length === 3" placeholder="заметка">
+            <input v-model="taskTitle1" :disabled="column1.notes.length === 3" placeholder="задача1">
+            <input v-model="taskTitle2" :disabled="column1.notes.length === 3" placeholder="задача2">
+            <input v-model="taskTitle3" :disabled="column1.notes.length === 3" placeholder="задача3">
+            <input type="submit" value="Добавить" :class="{disabled: column1.notes.length === 3}">
         </form>
 
     </div>
     <br>
 
     <div class="container">
-        <div class="column column1" :class="{disabled: notes2.length===5}">
-            <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="notes"
-                  :note_data="note_data" v-for="(note_data, index) in notes" :key="index" class="list">
+        <div class="column column1" :class="{disabled: signal}">
+            {{column1.idColumn}}
+            <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn"
+                  :note_data="note_data" v-for="(note_data, index) in column1.notes" :key="index" class="list">
             </list>
         </div>
         <div class="column column2">
-            <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)"
-                  @column2_move_left="moveColumn2Left(index)" :notes="notes2" :note_data="note_data"
-                  v-for="(note_data, index) in notes2" :key="index" class="list">
+            {{column2.idColumn}}
+            <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)" :id_column="column2.idColumn"
+                  @column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :note_data="note_data"
+                  v-for="(note_data, index) in column2.notes" :key="index" class="list">
             </list>
         </div>
         <div class="column column3">
-            <list @del_note="deleteNote3(index)" :notes="notes3" :note_data="note_data"
-                  v-for="(note_data, index) in notes3" :key="index" class="list">
+            {{column3.idColumn}}
+            <list @del_note="deleteNote3(index)" :notes="column3.notes" :note_data="note_data" :id_column="column3.idColumn"
+                  v-for="(note_data, index) in column3.notes" :key="index" class="list">
             </list>
         </div>
     </div>

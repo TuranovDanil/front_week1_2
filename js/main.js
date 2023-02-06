@@ -8,6 +8,12 @@ Vue.component('list', {
                 return {}
             }
         },
+        idColumn: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         notes: {
             type: Array,
             default() {
@@ -65,8 +71,8 @@ Vue.component('list', {
 
         },
         save() {
-            if (this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
-            else if (this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
+            if (this.idColumn === 1 && this.note_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
+            else if (this.idColumn === 3 && this.note_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
             else localStorage.todo2 = JSON.stringify(this.notes);
         }
 
@@ -107,31 +113,41 @@ Vue.component('list', {
 let app = new Vue({
     el: '#app',
     data: {
-        notes: [],
-        notes2: [],
-        notes3: [],
+        column1: {
+            notes: [],
+            idColumn: 1
+        },
+        column2: {
+            notes: [],
+            idColumn: 2
+        },
+        column3: {
+            notes: [],
+            idColumn: 3
+        },
         noteTitle: null,
         taskTitle1: null,
         taskTitle2: null,
         taskTitle3: null,
         completed: false,
+        signal: false
     },
     computed: {},
     mounted() {
         if (localStorage.todo) {
-            this.notes = JSON.parse(localStorage.todo)
+            this.column1.notes = JSON.parse(localStorage.todo)
         }
         if (localStorage.todo2) {
-            this.notes2 = JSON.parse(localStorage.todo2)
+            this.column2.notes = JSON.parse(localStorage.todo2)
         }
         if (localStorage.todo3) {
-            this.notes3 = JSON.parse(localStorage.todo3)
+            this.column3.notes = JSON.parse(localStorage.todo3)
         }
     },
     methods: {
         createNote() {
-            if (this.noteTitle && this.notes.length < 3 && this.taskTitle1 && this.taskTitle2 && this.taskTitle3) {
-                this.notes.push({
+            if (this.noteTitle && this.column1.notes.length < 3 && this.taskTitle1 && this.taskTitle2 && this.taskTitle3) {
+                this.column1.notes.push({
                     noteTitle: this.noteTitle,
                     tasks: [
                         {
@@ -155,52 +171,53 @@ let app = new Vue({
                 this.taskTitle1 = null;
                 this.taskTitle2 = null;
                 this.taskTitle3 = null
-                localStorage.todo = JSON.stringify(this.notes);
+                localStorage.todo = JSON.stringify(this.column1.notes);
 
             }
         },
         deleteNote1(id) {
-            this.notes.splice(id, 1);
-            localStorage.todo = JSON.stringify(this.notes);
+            this.column1.notes.splice(id, 1);
+            localStorage.todo = JSON.stringify(this.column1.notes);
         },
         deleteNote2(id) {
-
-            this.notes2.splice(id, 1);
-            localStorage.todo2 = JSON.stringify(this.notes2);
+            this.column2.notes.splice(id, 1);
+            localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
         deleteNote3(id) {
-            this.notes3.splice(id, 1);
-            localStorage.todo3 = JSON.stringify(this.notes3);
+            this.column3.notes.splice(id, 1);
+            localStorage.todo3 = JSON.stringify(this.column3.notes);
         },
         moveColumn1(id) {
-            if (this.notes[id].completedNum > 50 && this.notes2.length < 5) {
-                this.notes2.push(this.notes[id])
-                this.notes.splice(id, 1)
+            if (this.column1.notes[id].completedNum > 50 && this.column2.notes.length <= 5) {
+                if (this.column2.notes.length === 5) this.signal = true
+                this.column2.notes.push(this.column1.notes[id])
+                this.column1.notes.splice(id, 1)
             }
-            localStorage.todo = JSON.stringify(this.notes);
-            localStorage.todo2 = JSON.stringify(this.notes2);
+            localStorage.todo = JSON.stringify(this.column1.notes);
+            localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
         moveColumn2(id) {
-            if (this.notes2[id].completedNum === 100) {
+            if (this.column2.notes[id].completedNum === 100) {
                 this.timeAndData(id);
-                this.notes3.push(this.notes2[id]);
-                this.notes2.splice(id, 1);
+                this.column3.notes.push(this.column2.notes[id]);
+                this.column2.notes.splice(id, 1);
+                this.signal = false
             }
-            localStorage.todo2 = JSON.stringify(this.notes2);
-            localStorage.todo3 = JSON.stringify(this.notes3);
+            localStorage.todo2 = JSON.stringify(this.column2.notes);
+            localStorage.todo3 = JSON.stringify(this.column3.notes);
         },
         moveColumn2Left(id) {
-            if (this.notes2[id].completedNum <= 50) {
-                this.notes.unshift(this.notes2[id]);
-                this.notes2.splice(id, 1);
+            if (this.column2.notes[id].completedNum <= 50) {
+                this.column1.notes.unshift(this.column2.notes[id]);
+                this.column2.notes.splice(id, 1);
             }
-            localStorage.todo = JSON.stringify(this.notes);
-            localStorage.todo2 = JSON.stringify(this.notes2);
+            localStorage.todo = JSON.stringify(this.column1.notes);
+            localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
-        timeAndData(id){
+        timeAndData(id) {
             let Data = new Date();
-            this.notes2[id].time = Data.getHours() + ':' + Data.getMinutes();
-            this.notes2[id].date = Data.getDate() + ':' + Data.getMonth() + ':' + Data.getFullYear();
+            this.column2.notes[id].time = Data.getHours() + ':' + Data.getMinutes();
+            this.column2.notes[id].date = Data.getDate() + ':' + Data.getMonth() + ':' + Data.getFullYear();
         }
     },
 })
