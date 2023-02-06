@@ -130,7 +130,11 @@ let app = new Vue({
         taskTitle2: null,
         taskTitle3: null,
         completed: false,
-        signal: false
+        about:{
+            signal: false,
+            bufColumn: [],
+            id: null
+        },
     },
     computed: {},
     mounted() {
@@ -142,6 +146,9 @@ let app = new Vue({
         }
         if (localStorage.todo3) {
             this.column3.notes = JSON.parse(localStorage.todo3)
+        }
+        if (localStorage.about){
+            this.about = JSON.parse(localStorage.about)
         }
     },
     methods: {
@@ -181,6 +188,9 @@ let app = new Vue({
         },
         deleteNote2(id) {
             this.column2.notes.splice(id, 1);
+            this.about.signal = false
+            this.moveColumn1(this.about.id)
+            localStorage.about = JSON.stringify(this.about)
             localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
         deleteNote3(id) {
@@ -189,27 +199,42 @@ let app = new Vue({
         },
         moveColumn1(id) {
             if (this.column1.notes[id].completedNum > 50 && this.column2.notes.length <= 5) {
-                if (this.column2.notes.length === 5) this.signal = true
-                this.column2.notes.push(this.column1.notes[id])
-                this.column1.notes.splice(id, 1)
+                if (this.column2.notes.length === 5) {
+                    this.about.signal = true;
+                    this.about.bufColumn.push(this.column1.notes[id])
+                    this.about.id = id
+                }
+                else if(this.about.bufColumn[0] && this.column2.notes.length === 4){
+                    this.column2.notes.push(this.about.bufColumn[0])
+                    this.about.bufColumn.splice(0, 1)
+                    this.column1.notes.splice(this.about.id, 1)
+                }
+                else {
+                    this.column2.notes.push(this.column1.notes[id])
+                    this.column1.notes.splice(id, 1)
+                }
             }
             localStorage.todo = JSON.stringify(this.column1.notes);
             localStorage.todo2 = JSON.stringify(this.column2.notes);
+            localStorage.about = JSON.stringify(this.about)
         },
         moveColumn2(id) {
             if (this.column2.notes[id].completedNum === 100) {
                 this.timeAndData(id);
                 this.column3.notes.push(this.column2.notes[id]);
                 this.column2.notes.splice(id, 1);
-                this.signal = false
+                this.moveColumn1(this.about.id)
+                this.about.signal = false
             }
             localStorage.todo2 = JSON.stringify(this.column2.notes);
             localStorage.todo3 = JSON.stringify(this.column3.notes);
+            localStorage.about = JSON.stringify(this.about)
         },
         moveColumn2Left(id) {
             if (this.column2.notes[id].completedNum <= 50) {
                 this.column1.notes.unshift(this.column2.notes[id]);
                 this.column2.notes.splice(id, 1);
+                this.moveColumn1(this.about.id)
             }
             localStorage.todo = JSON.stringify(this.column1.notes);
             localStorage.todo2 = JSON.stringify(this.column2.notes);
