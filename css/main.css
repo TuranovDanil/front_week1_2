@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+body{
+    width: 100%;
+}
+
 #created {
     text-align: center;
 }
@@ -92,4 +96,15 @@ li{
     border-radius: 20px;
     padding: 5px;
     margin-bottom: 10px;
+}
+
+.reset_priority{
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.reset_priority_button{
+    margin-left: 200px;
+    width: max-content;
 }

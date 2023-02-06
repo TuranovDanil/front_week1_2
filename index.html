@@ -14,35 +14,69 @@
 <div id="app">
     <div id="created">
         <h1>Заметки</h1>
-        <form @submit.prevent="createNote">
-            <input v-model="noteTitle" :disabled="column1.notes.length === 3" placeholder="заметка">
-            <input v-model="taskTitle1" :disabled="column1.notes.length === 3" placeholder="задача1">
-            <input v-model="taskTitle2" :disabled="column1.notes.length === 3" placeholder="задача2">
-            <input v-model="taskTitle3" :disabled="column1.notes.length === 3" placeholder="задача3">
+        <form @submit.prevent="createNote" :class="{disabled: column1.notes.length === 3}">
+            <label for="priority_note">приоритет:</label>
+            <select id="priority_note" v-model="priorityNote">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+            <input v-model="noteTitle" placeholder="заметка">
+            <input v-model="taskTitle1" placeholder="задача1">
+            <input v-model="taskTitle2"  placeholder="задача2">
+            <input v-model="taskTitle3"  placeholder="задача3">
             <input type="submit" value="Добавить" :class="{disabled: column1.notes.length === 3}">
         </form>
 
     </div>
     <br>
-
+    <div class="reset_priority">
+        <button class="reset_priority_button" @click="resetPriority()">сбросить фильтры</button>
+    </div>
     <div class="container">
         <div class="column column1" :class="{disabled: about.signal}">
-            {{column1.idColumn}}
+            <label for="priority_notes">приоритет:</label>
+            <select id="priority_notes" v-model="column1.priorityNotes">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+                <option value="">сбросить</option>
+            </select>
             <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn" :about="about"
-                  :note_data="note_data" v-for="(note_data, index) in column1.notes" :key="index" class="list">
+                  :note_data="note_data" v-for="(note_data, index) in column1.notes" :key="index" class="list" v-if="note_data.priorityNote === column1.priorityNotes || !column1.priorityNotes">
             </list>
         </div>
         <div class="column column2">
-            {{column2.idColumn}}
+            <label for="priority_notes2">приоритет:</label>
+            <select id="priority_notes2" v-model="column2.priorityNotes">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+                <option value="">сбросить</option>
+            </select>
             <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)" :id_column="column2.idColumn" :about="about"
-                  @column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :note_data="note_data"
+                  @column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :note_data="note_data" v-if="note_data.priorityNote === column2.priorityNotes || !column2.priorityNotes"
                   v-for="(note_data, index) in column2.notes" :key="index" class="list">
             </list>
         </div>
         <div class="column column3">
-            {{column3.idColumn}}
+            <label for="priority_notes3">приоритет:</label>
+            <select id="priority_notes3" v-model="column3.priorityNotes">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+                <option value="">сбросить</option>
+            </select>
             <list @del_note="deleteNote3(index)" :notes="column3.notes" :note_data="note_data" :id_column="column3.idColumn" :about="about"
-                  v-for="(note_data, index) in column3.notes" :key="index" class="list">
+                  v-for="(note_data, index) in column3.notes" :key="index" class="list" v-if="note_data.priorityNote === column3.priorityNotes || !column3.priorityNotes">
             </list>
         </div>
     </div>

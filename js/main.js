@@ -86,6 +86,7 @@ Vue.component('list', {
     template: `
     <div class="list" >
             <div class="note_title_block">
+                <p>[{{note_data.priorityNote}}]</p>
                 <h2 class="note_title">{{note_data.noteTitle}}</h2>
                 <button @click="delNote()">X</button>
             </div>
@@ -122,26 +123,30 @@ let app = new Vue({
     data: {
         column1: {
             notes: [],
-            idColumn: 1
+            idColumn: 1,
+            priorityNotes: null,
         },
         column2: {
             notes: [],
-            idColumn: 2
+            idColumn: 2,
+            priorityNotes: null,
         },
         column3: {
             notes: [],
-            idColumn: 3
+            idColumn: 3,
+            priorityNotes: null,
         },
         noteTitle: null,
         taskTitle1: null,
         taskTitle2: null,
         taskTitle3: null,
         completed: false,
+        priorityNote: null,
         about:{
             signal: false,
             bufColumn: [],
             id: null,
-            lengthColumn1: null
+            lengthColumn1: null,
         },
     },
     computed: {},
@@ -161,8 +166,9 @@ let app = new Vue({
     },
     methods: {
         createNote() {
-            if (this.noteTitle && this.column1.notes.length < 3 && this.taskTitle1 && this.taskTitle2 && this.taskTitle3) {
+            if (this.noteTitle && this.column1.notes.length < 3 && this.taskTitle1 && this.taskTitle2 && this.taskTitle3 && this.priorityNote) {
                 this.column1.notes.push({
+                    priorityNote: this.priorityNote,
                     noteTitle: this.noteTitle,
                     tasks: [
                         {
@@ -259,6 +265,14 @@ let app = new Vue({
         length(){
             this.about.lengthColumn1 = this.column1.notes.length;
             localStorage.about = JSON.stringify(this.about)
+        },
+        resetPriority(){
+            this.column1.priorityNotes = null;
+            this.column2.priorityNotes = null;
+            this.column3.priorityNotes = null;
+            localStorage.todo = JSON.stringify(this.column1.notes);
+            localStorage.todo2 = JSON.stringify(this.column2.notes);
+            localStorage.todo3 = JSON.stringify(this.column3.notes);
         }
     },
 })
