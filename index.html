@@ -26,7 +26,7 @@
     <br>
 
     <div class="container">
-        <div class="column column1" :class="{disabled: signal}">
+        <div class="column column1" :class="{disabled: about.signal}">
             {{column1.idColumn}}
             <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn"
                   :note_data="note_data" v-for="(note_data, index) in column1.notes" :key="index" class="list">
