@@ -19,6 +19,12 @@ Vue.component('list', {
             default() {
                 return {}
             }
+        },
+        about:{
+            type: Object,
+            default() {
+                return {}
+            }
         }
     },
     data() {
@@ -90,8 +96,9 @@ Vue.component('list', {
                         <input @click="checkbox(elementId),column1Move(),column2Move(),column2MoveLeft()" 
                                type="checkbox" 
                                v-model="element.completed" 
-                               :class="{none: note_data.completedNum === 100, disabled: note_data.completedNum > 50 && element.completed}" >
+                               :class="{none: note_data.completedNum === 100, disabled: note_data.completedNum > 50 && element.completed && about.lengthColumn1 === 3}" >
                     </div>
+                    
                     <div class="date" v-if="note_data.date">
                         <p>{{note_data.time}}</p>
                         <p>{{note_data.date}}</p>
@@ -133,7 +140,8 @@ let app = new Vue({
         about:{
             signal: false,
             bufColumn: [],
-            id: null
+            id: null,
+            lengthColumn1: null
         },
     },
     computed: {},
@@ -181,9 +189,11 @@ let app = new Vue({
                 localStorage.todo = JSON.stringify(this.column1.notes);
 
             }
+            this.length()
         },
         deleteNote1(id) {
             this.column1.notes.splice(id, 1);
+            this.length()
             localStorage.todo = JSON.stringify(this.column1.notes);
         },
         deleteNote2(id) {
@@ -214,6 +224,7 @@ let app = new Vue({
                     this.column1.notes.splice(id, 1)
                 }
             }
+            this.length()
             localStorage.todo = JSON.stringify(this.column1.notes);
             localStorage.todo2 = JSON.stringify(this.column2.notes);
             localStorage.about = JSON.stringify(this.about)
@@ -236,6 +247,7 @@ let app = new Vue({
                 this.column2.notes.splice(id, 1);
                 this.moveColumn1(this.about.id)
             }
+            this.length()
             localStorage.todo = JSON.stringify(this.column1.notes);
             localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
@@ -243,6 +255,10 @@ let app = new Vue({
             let Data = new Date();
             this.column2.notes[id].time = Data.getHours() + ':' + Data.getMinutes();
             this.column2.notes[id].date = Data.getDate() + ':' + Data.getMonth() + ':' + Data.getFullYear();
+        },
+        length(){
+            this.about.lengthColumn1 = this.column1.notes.length;
+            localStorage.about = JSON.stringify(this.about)
         }
     },
 })
