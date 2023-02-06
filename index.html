@@ -28,20 +28,20 @@
     <div class="container">
         <div class="column column1" :class="{disabled: about.signal}">
             {{column1.idColumn}}
-            <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn"
+            <list @del_note="deleteNote1(index)" @column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn" :about="about"
                   :note_data="note_data" v-for="(note_data, index) in column1.notes" :key="index" class="list">
             </list>
         </div>
         <div class="column column2">
             {{column2.idColumn}}
-            <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)" :id_column="column2.idColumn"
+            <list @del_note="deleteNote2(index)" @column2_move="moveColumn2(index)" :id_column="column2.idColumn" :about="about"
                   @column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :note_data="note_data"
                   v-for="(note_data, index) in column2.notes" :key="index" class="list">
             </list>
         </div>
         <div class="column column3">
             {{column3.idColumn}}
-            <list @del_note="deleteNote3(index)" :notes="column3.notes" :note_data="note_data" :id_column="column3.idColumn"
+            <list @del_note="deleteNote3(index)" :notes="column3.notes" :note_data="note_data" :id_column="column3.idColumn" :about="about"
                   v-for="(note_data, index) in column3.notes" :key="index" class="list">
             </list>
         </div>
