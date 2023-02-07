@@ -192,7 +192,7 @@ let app = new Vue({
                 this.taskTitle1 = null;
                 this.taskTitle2 = null;
                 this.taskTitle3 = null
-                localStorage.todo = JSON.stringify(this.column1.notes);
+                this.save();
 
             }
             this.length()
@@ -200,18 +200,17 @@ let app = new Vue({
         deleteNote1(id) {
             this.column1.notes.splice(id, 1);
             this.length()
-            localStorage.todo = JSON.stringify(this.column1.notes);
+            this.save();
         },
         deleteNote2(id) {
             this.column2.notes.splice(id, 1);
             this.about.signal = false
             this.moveColumn1(this.about.id)
-            localStorage.about = JSON.stringify(this.about)
-            localStorage.todo2 = JSON.stringify(this.column2.notes);
+            this.save();
         },
         deleteNote3(id) {
             this.column3.notes.splice(id, 1);
-            localStorage.todo3 = JSON.stringify(this.column3.notes);
+            this.save();
         },
         moveColumn1(id) {
             if (this.column1.notes[id].completedNum > 50 && this.column2.notes.length <= 5) {
@@ -231,9 +230,7 @@ let app = new Vue({
                 }
             }
             this.length()
-            localStorage.todo = JSON.stringify(this.column1.notes);
-            localStorage.todo2 = JSON.stringify(this.column2.notes);
-            localStorage.about = JSON.stringify(this.about)
+            this.save();
         },
         moveColumn2(id) {
             if (this.column2.notes[id].completedNum === 100) {
@@ -243,9 +240,7 @@ let app = new Vue({
                 this.moveColumn1(this.about.id)
                 this.about.signal = false
             }
-            localStorage.todo2 = JSON.stringify(this.column2.notes);
-            localStorage.todo3 = JSON.stringify(this.column3.notes);
-            localStorage.about = JSON.stringify(this.about)
+            this.save();
         },
         moveColumn2Left(id) {
             if (this.column2.notes[id].completedNum <= 50) {
@@ -254,8 +249,7 @@ let app = new Vue({
                 this.moveColumn1(this.about.id)
             }
             this.length()
-            localStorage.todo = JSON.stringify(this.column1.notes);
-            localStorage.todo2 = JSON.stringify(this.column2.notes);
+            this.save();
         },
         timeAndData(id) {
             let Data = new Date();
@@ -264,12 +258,16 @@ let app = new Vue({
         },
         length(){
             this.about.lengthColumn1 = this.column1.notes.length;
-            localStorage.about = JSON.stringify(this.about)
+            this.save();
         },
         resetPriority(){
             this.column1.priorityNotes = null;
             this.column2.priorityNotes = null;
             this.column3.priorityNotes = null;
+            this.save();
+        },
+        save() {
+            localStorage.about = JSON.stringify(this.about);
             localStorage.todo = JSON.stringify(this.column1.notes);
             localStorage.todo2 = JSON.stringify(this.column2.notes);
             localStorage.todo3 = JSON.stringify(this.column3.notes);
